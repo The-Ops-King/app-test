@@ -19,7 +19,7 @@ class DeckTest {
                 assertTrue("${card.id}: blank scale end", s.low.isNotBlank() && s.high.isNotBlank())
             }
             val all = card.text + card.scales.joinToString { it.low + it.high }
-            assertTrue("${card.id}: no em/en dashes", '—' !in all && '–' !in all)
+            assertTrue("${card.id}: no em/en dashes", '\u2014' !in all && '\u2013' !in all)
         }
     }
 
