@@ -59,6 +59,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            // Screenshot rendering is slow and downloads a large Android runtime.
+            // Run it on demand: ./gradlew testDebugUnitTest -Pscreenshots
+            all { test ->
+                if (!project.hasProperty("screenshots")) test.exclude("**/screenshots/**")
+            }
+        }
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -77,4 +88,8 @@ dependencies {
     // Android's org.json is a stub in local unit tests; this supplies the real one.
     testImplementation(libs.junit)
     testImplementation(libs.org.json)
+    testImplementation(libs.robolectric)
+    testImplementation(platform(libs.compose.bom))
+    testImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

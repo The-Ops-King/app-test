@@ -18,15 +18,15 @@ class DeckTest {
             card.scales.forEach { s ->
                 assertTrue("${card.id}: blank scale end", s.low.isNotBlank() && s.high.isNotBlank())
             }
-            val all = card.text + card.scales.joinToString { it.low + it.high }
+            val all = card.text + card.scales.joinToString { (it.phrase ?: "") + it.low + it.high }
             assertTrue("${card.id}: no em/en dashes", '\u2014' !in all && '\u2013' !in all)
         }
     }
 
-    @Test fun `label scales expand to least and most`() {
+    @Test fun `label scales become a phrase rated least to most`() {
         val parsed = Deck.parse("""{"prompts":[{"id":"x","text":"Q?","scales":[{"label":"useful"},{"low":"Cutest","high":"Scariest"}]}]}""")
-        assertEquals(Scale("Least useful", "Most useful"), parsed[0].scales[0])
-        assertEquals(Scale("Cutest", "Scariest"), parsed[0].scales[1])
+        assertEquals(Scale("Useful", "Least", "Most"), parsed[0].scales[0])
+        assertEquals(Scale(null, "Cutest", "Scariest"), parsed[0].scales[1])
     }
 
     @Test fun `shuffle bag shows every card once per pass and never repeats back to back`() {

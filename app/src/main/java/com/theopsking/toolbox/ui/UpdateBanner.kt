@@ -65,7 +65,8 @@ fun UpdateBanner(state: UpdateState) {
 private fun BannerCard(message: String, actions: @Composable () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(message, style = MaterialTheme.typography.bodyLarge)

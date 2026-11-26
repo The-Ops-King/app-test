@@ -1,3 +1,5 @@
 <resources>
-    <style name="Theme.Toolbox" parent="android:Theme.Material.NoActionBar" />
+    <style name="Theme.Toolbox" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/ink</item>
+    </style>
 </resources>

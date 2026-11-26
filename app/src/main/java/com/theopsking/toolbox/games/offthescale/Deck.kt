@@ -3,8 +3,12 @@ package com.theopsking.toolbox.games.offthescale
 import org.json.JSONObject
 import kotlin.random.Random
 
-/** One end-to-end scale. 1 is [low], 10 is [high]. */
-data class Scale(val low: String, val high: String)
+/**
+ * One 1-to-10 scale. [phrase] is what's being rated ("Likely I'll get fired"), and
+ * [low] / [high] label the two ends ("Least" / "Most"). Scales whose ends need
+ * different words ("Cutest" / "Scariest") have no phrase.
+ */
+data class Scale(val phrase: String?, val low: String, val high: String)
 
 data class PromptCard(val id: String, val text: String, val scales: List<Scale>)
 
@@ -12,9 +16,9 @@ object Deck {
     const val ASSET_PATH = "off_the_scale/prompts.json"
 
     /**
-     * Each scale in prompts.json is either {"label": "useful"}, which becomes
-     * "Least useful" / "Most useful", or {"low": "Cutest", "high": "Scariest"}
-     * when the two ends need different words.
+     * Each scale in prompts.json is either {"label": "useful"}, shown as "Useful"
+     * from Least to Most, or {"low": "Cutest", "high": "Scariest"} when the two
+     * ends need different words.
      */
     fun parse(json: String): List<PromptCard> {
         val prompts = JSONObject(json).getJSONArray("prompts")
@@ -28,9 +32,9 @@ object Deck {
                     val s = scales.getJSONObject(j)
                     if (s.has("label")) {
                         val label = s.getString("label")
-                        Scale(low = "Least $label", high = "Most $label")
+                        Scale(phrase = label.replaceFirstChar { it.uppercaseChar() }, low = "Least", high = "Most")
                     } else {
-                        Scale(low = s.getString("low"), high = s.getString("high"))
+                        Scale(phrase = null, low = s.getString("low"), high = s.getString("high"))
                     }
                 },
             )

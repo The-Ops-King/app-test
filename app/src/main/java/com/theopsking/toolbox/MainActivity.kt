@@ -1,6 +1,8 @@
 package com.theopsking.toolbox
 
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -17,7 +19,11 @@ import com.theopsking.toolbox.update.UpdateController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // Dark system bars to match the always-dark theme.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        )
         UpdateController.init(applicationContext)
         if (savedInstanceState == null) UpdateController.checkForUpdate()
         setContent {
