@@ -47,7 +47,7 @@ CODE=$((PREV_CODE + 1))
 VERSION="1.0.$CODE"
 echo "Building $APP $VERSION (versionCode $CODE) from $SOURCE_SHA"
 
-TOOLBOX_VERSION_CODE="$CODE" ./gradlew --quiet testDebugUnitTest assembleRelease
+TOOLBOX_VERSION_CODE="$CODE" ./gradlew --quiet -I scripts/maven-mirror.init.gradle testDebugUnitTest assembleRelease
 APK="app/build/outputs/apk/release/app-release.apk"
 
 "$APKSIGNER" verify --print-certs "$APK" | grep -q "SHA-256 digest: $EXPECTED_CERT" \

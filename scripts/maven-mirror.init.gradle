@@ -1,0 +1,12 @@
+// Used by scripts/release.sh. Cloud sessions often get HTTP 429 from Maven Central,
+// so resolve Central artifacts through Google's official mirror of it instead.
+def mirror = "https://maven-central.storage-download.googleapis.com/maven2/"
+settingsEvaluated { settings ->
+    [settings.pluginManagement.repositories, settings.dependencyResolutionManagement.repositories].each { repos ->
+        repos.removeIf {
+            it instanceof MavenArtifactRepository &&
+                (it.url.toString().contains("repo.maven.apache.org") || it.url.toString().contains("plugins.gradle.org"))
+        }
+        repos.maven { url = mirror }
+    }
+}

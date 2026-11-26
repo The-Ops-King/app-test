@@ -4,7 +4,7 @@ Personal Android app. Releases are built in a Claude session and published to th
 
 ## Release procedure
 
-1. Make the change and run `./gradlew testDebugUnitTest`.
+1. Make the change and run `./gradlew -I scripts/maven-mirror.init.gradle testDebugUnitTest` (the mirror avoids Maven Central rate limits). To check visuals, add `-Pscreenshots` and look at `app/build/screenshots/`.
 2. Commit and push to `main` (confirm with the owner that pushing to `main` and `releases` is fine in the current session).
 3. Install the Android SDK if needed: `scripts/install-android-sdk.sh <dir outside the repo>`.
 4. The signing key is in the owner's Google Drive, folder `Toolbox/signing`:
