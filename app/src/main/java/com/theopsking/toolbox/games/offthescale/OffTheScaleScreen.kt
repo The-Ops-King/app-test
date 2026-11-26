@@ -1,6 +1,25 @@
 package com.theopsking.toolbox.games.offthescale
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.IntOffset
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -74,6 +93,17 @@ fun OffTheScaleScreen(onBack: () -> Unit) {
     var pickedScale by rememberSaveable { mutableStateOf<Int?>(null) }
 
     val dealt = Dealt(number = position + 1, card = deck[Deck.cardIndexAt(seed, position, deck.size)])
+    val haptics = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
+    // How far the current card has been dragged by a swipe, in px.
+    val drag = remember { Animatable(0f) }
+
+    fun deal() {
+        haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+        position++
+        pickedScale = null
+        scope.launch { drag.snapTo(0f) }
+    }
 
     Scaffold(
         containerColor = Brand.Ink,
@@ -92,10 +122,7 @@ fun OffTheScaleScreen(onBack: () -> Unit) {
             // navigationBarsPadding keeps the button above Android's home/back bar.
             Box(Modifier.fillMaxWidth().background(Brand.Ink).navigationBarsPadding().padding(16.dp)) {
                 Button(
-                    onClick = {
-                        position++
-                        pickedScale = null
-                    },
+                    onClick = { deal() },
                     shape = RoundedCornerShape(6.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Brand.Accent, contentColor = Brand.Bone),
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -108,14 +135,60 @@ fun OffTheScaleScreen(onBack: () -> Unit) {
         AnimatedContent(
             targetState = dealt,
             transitionSpec = {
-                (slideInHorizontally(tween(280)) { it / 3 } + fadeIn(tween(280)))
-                    .togetherWith(slideOutHorizontally(tween(200)) { -it / 3 } + fadeOut(tween(200)))
+                // Old card is flicked off to the left; the new one is dealt in from the right.
+                val dealIn = spring<IntOffset>(dampingRatio = 0.78f, stiffness = Spring.StiffnessMediumLow)
+                (slideInHorizontally(dealIn) { it } + fadeIn(tween(160)) + scaleIn(spring(0.78f, Spring.StiffnessMediumLow), initialScale = 0.92f))
+                    .togetherWith(
+                        slideOutHorizontally(tween(260, easing = FastOutLinearInEasing)) { -(it * 1.2f).toInt() } +
+                            fadeOut(tween(260, easing = FastOutLinearInEasing)),
+                    )
             },
             label = "deal",
             modifier = Modifier.padding(padding),
         ) { shown ->
+            // Tilt like a tossed card: leans in on arrival, spins away on exit.
+            val tilt by transition.animateFloat(
+                transitionSpec = { spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow) },
+                label = "tilt",
+            ) { state ->
+                when (state) {
+                    EnterExitState.PreEnter -> 6f
+                    EnterExitState.Visible -> 0f
+                    EnterExitState.PostExit -> -14f
+                }
+            }
+            // A card that's leaving keeps the offset it was swiped to instead of snapping back.
+            val frozenDrag = remember { FloatArray(1) }
             Column(
-                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 8.dp),
+                Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        val offset = if (transition.targetState == EnterExitState.Visible) {
+                            drag.value.also { frozenDrag[0] = it }
+                        } else {
+                            frozenDrag[0]
+                        }
+                        translationX = offset
+                        rotationZ = tilt + offset / 40f
+                    }
+                    .pointerInput(Unit) {
+                        // Swipe left to deal, like flicking a card off the table.
+                        detectHorizontalDragGestures(
+                            onDragEnd = {
+                                if (drag.value < -size.width * 0.28f) {
+                                    deal()
+                                } else {
+                                    scope.launch { drag.animateTo(0f, spring(dampingRatio = 0.6f)) }
+                                }
+                            },
+                            onDragCancel = { scope.launch { drag.animateTo(0f, spring(dampingRatio = 0.6f)) } },
+                        ) { change, amount ->
+                            change.consume()
+                            scope.launch { drag.snapTo((drag.value + amount).coerceAtMost(size.width * 0.15f)) }
+                        }
+                    }
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 PromptCard(shown)
@@ -127,10 +200,18 @@ fun OffTheScaleScreen(onBack: () -> Unit) {
                 )
                 shown.card.scales.forEachIndexed { i, scale ->
                     ScaleOption(
+                        modifier = Modifier.animateEnterExit(
+                            enter = fadeIn(tween(220, delayMillis = 140 + i * 70)) +
+                                slideInVertically(tween(320, delayMillis = 140 + i * 70)) { it / 2 },
+                            exit = fadeOut(tween(120)),
+                        ),
                         scale = scale,
                         picked = pickedScale == i,
                         dimmed = pickedScale != null && pickedScale != i,
-                        onClick = { pickedScale = if (pickedScale == i) null else i },
+                        onClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                            pickedScale = if (pickedScale == i) null else i
+                        },
                     )
                 }
             }
@@ -162,14 +243,27 @@ private fun PromptCard(dealt: Dealt) {
 }
 
 @Composable
-private fun ScaleOption(scale: Scale, picked: Boolean, dimmed: Boolean, onClick: () -> Unit) {
-    val alpha = if (dimmed) 0.4f else 1f
+private fun ScaleOption(
+    scale: Scale,
+    picked: Boolean,
+    dimmed: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val alpha by animateFloatAsState(if (dimmed) 0.4f else 1f, label = "dim")
+    val pop by animateFloatAsState(
+        if (picked) 1.03f else 1f,
+        spring(dampingRatio = 0.45f, stiffness = Spring.StiffnessMedium),
+        label = "pop",
+    )
+    val fill by animateColorAsState(if (picked) Brand.AccentSoft else Brand.Raised, label = "fill")
+    val edge by animateColorAsState(if (picked) Brand.Accent else Brand.Hair, label = "edge")
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(8.dp),
-        color = if (picked) Brand.AccentSoft else Brand.Raised,
-        border = BorderStroke(1.dp, if (picked) Brand.Accent else Brand.Hair),
-        modifier = Modifier.fillMaxWidth(),
+        color = fill,
+        border = BorderStroke(1.dp, edge),
+        modifier = modifier.fillMaxWidth().scale(pop),
     ) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             if (scale.phrase != null) {
