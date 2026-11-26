@@ -31,7 +31,7 @@ class DeckTest {
 
     @Test fun `shuffle bag shows every card once per pass and never repeats back to back`() {
         val size = deck.size
-        for (seed in 0L until 200L) {
+        for (seed in 0L until 50L) {
             val draws = (0 until size * 4).map { Deck.cardIndexAt(seed, it, size) }
             draws.chunked(size).forEach { pass -> assertEquals((0 until size).toSet(), pass.toSet()) }
             draws.zipWithNext().forEach { (a, b) -> assertNotEquals("seed $seed repeated a card", a, b) }

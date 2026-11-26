@@ -53,13 +53,18 @@ object Deck {
     }
 
     private fun passOrder(seed: Long, pass: Int, deckSize: Int): List<Int> {
-        val order = (0 until deckSize).shuffled(Random(seed + pass)).toMutableList()
-        if (pass > 0 && deckSize > 1) {
-            val previousLast = passOrder(seed, pass - 1, deckSize).last()
+        val order = rawOrder(seed, pass, deckSize).toMutableList()
+        if (pass > 0 && deckSize > 2) {
+            // The swap below only touches the first two slots, so with 3+ cards the
+            // previous pass's last card is just the last card of its raw shuffle.
+            val previousLast = rawOrder(seed, pass - 1, deckSize).last()
             if (order[0] == previousLast) {
                 order[0] = order[1].also { order[1] = order[0] }
             }
         }
         return order
     }
+
+    private fun rawOrder(seed: Long, pass: Int, deckSize: Int): List<Int> =
+        (0 until deckSize).shuffled(Random(seed + pass))
 }
