@@ -3,13 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-// Release signing comes from environment variables set by CI (see .github/workflows/release.yml).
+// Release signing comes from environment variables set by scripts/release.sh.
 // The keystore itself is never committed.
 val keystoreFile: String? = System.getenv("TOOLBOX_KEYSTORE_FILE")
 val keystorePassword: String? = System.getenv("TOOLBOX_KEYSTORE_PASSWORD")
 
 // versionCode must only ever go up, or installed apps refuse the update.
-// CI passes the commit count of main; local builds default to 1.
+// scripts/release.sh passes the last published versionCode + 1; local builds default to 1.
 val appVersionCode: Int = System.getenv("TOOLBOX_VERSION_CODE")?.toInt() ?: 1
 
 android {
@@ -29,7 +29,7 @@ android {
         buildConfigField(
             "String",
             "UPDATE_MANIFEST_URL",
-            "\"https://github.com/The-Ops-King/app-test/releases/latest/download/update.json\""
+            "\"https://raw.githubusercontent.com/The-Ops-King/app-test/releases/toolbox/update.json\""
         )
     }
 

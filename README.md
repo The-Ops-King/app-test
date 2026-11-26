@@ -1,29 +1,18 @@
 # Toolbox
 
-A native Android app (Kotlin + Jetpack Compose) that holds small mini apps. It installs from GitHub Releases and updates itself.
+A native Android app (Kotlin + Jetpack Compose) for one person's phone. It holds small mini apps, installs straight from this repo, and updates itself. It never goes through the Play Store.
 
-## How releases work
+## How updates work
 
-Every push to `main` runs `.github/workflows/release.yml`, which:
+`scripts/release.sh` builds a signed APK and force-pushes it to the `releases` branch with an `update.json` next to it. When the app opens, it reads `releases/toolbox/update.json` from raw.githubusercontent.com. If that version is newer, it shows an "Update now" banner, downloads the APK, checks its SHA-256 and installs it with `PackageInstaller`.
 
-1. runs the unit tests,
-2. builds a release APK signed with the key in the repository secrets,
-3. publishes a GitHub Release with `toolbox.apk` and `update.json`.
+The `releases` branch is rebuilt on every release and only holds the newest and previous APK. Don't commit to it by hand.
 
-The app reads `releases/latest/download/update.json` when it opens. If the version is newer, it shows an "Update now" banner, downloads the APK, checks its SHA-256 and installs it with `PackageInstaller`.
-
-`versionCode` is the commit count on `main`, so it only goes up. Don't rewrite `main`'s history or force-push, or the count can go backwards and phones will refuse the update.
+Fresh install link: https://raw.githubusercontent.com/The-Ops-King/app-test/releases/toolbox/toolbox.apk
 
 ## Signing key
 
-Two repository secrets are required:
-
-| Secret | Contents |
-| --- | --- |
-| `TOOLBOX_KEYSTORE_BASE64` | the PKCS12 keystore, base64 encoded |
-| `TOOLBOX_KEYSTORE_PASSWORD` | its password (the key alias is `toolbox`) |
-
-Keep a backup of the keystore and password outside GitHub. If they're lost, installed copies can't be updated. You'd have to uninstall and reinstall.
+Every release must be signed with the same key, or installed copies refuse the update. The key is never committed. It lives in the owner's Google Drive (`Toolbox/signing`), which is also the backup. `scripts/release.sh` checks the certificate fingerprint and refuses to publish an APK signed with anything else.
 
 ## Adding a mini app
 
@@ -32,12 +21,11 @@ Keep a backup of the keystore and password outside GitHub. If they're lost, inst
 
 ## Off the Scale cards
 
-Cards live in `app/src/main/assets/off_the_scale/prompts.json`. Each scale is either `{"label": "useful"}`, which shows as "Least useful" / "Most useful", or `{"low": "Cutest", "high": "Scariest"}`. The unit tests check that every card has a question and exactly three scales.
+Cards live in `app/src/main/assets/off_the_scale/prompts.json`. Each scale is either `{"label": "useful"}`, which shows as "Least useful" / "Most useful", or `{"low": "Cutest", "high": "Scariest"}`. The unit tests check that every card is a question with exactly three scales.
 
 ## Building locally
 
-Needs JDK 17+ and the Android SDK (platform `android-37.2`, build tools `37.0.0`).
-
 ```
+scripts/install-android-sdk.sh
 ./gradlew testDebugUnitTest assembleDebug
 ```
