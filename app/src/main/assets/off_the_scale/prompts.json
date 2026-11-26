@@ -1,0 +1,755 @@
+{
+  "prompts": [
+    {
+      "id": "car-breakdown",
+      "text": "My car breaks down in the middle of nowhere. Who pulls over?",
+      "scales": [
+        {
+          "label": "likely I'll get in the car"
+        },
+        {
+          "label": "helpful"
+        },
+        {
+          "label": "likely I'll make it home tonight"
+        }
+      ]
+    },
+    {
+      "id": "hotel-room",
+      "text": "I check into my hotel room. What's already in there?",
+      "scales": [
+        {
+          "label": "likely I'll stay the night"
+        },
+        {
+          "label": "likely I'll get a refund"
+        },
+        {
+          "low": "Cutest",
+          "high": "Scariest"
+        }
+      ]
+    },
+    {
+      "id": "proposal",
+      "text": "My partner gets down on one knee. What do they say?",
+      "scales": [
+        {
+          "label": "likely I'll say yes"
+        },
+        {
+          "label": "likely I'll run back to my ex"
+        },
+        {
+          "label": "likely the whole restaurant claps"
+        }
+      ]
+    },
+    {
+      "id": "desert-island",
+      "text": "I'm stranded on a desert island. What washes up on shore?",
+      "scales": [
+        {
+          "label": "likely I'll get rescued"
+        },
+        {
+          "label": "useful"
+        },
+        {
+          "label": "likely it becomes my best friend"
+        }
+      ]
+    },
+    {
+      "id": "restaurant-theme",
+      "text": "I'm opening a restaurant. What's the theme?",
+      "scales": [
+        {
+          "label": "likely I'll go out of business"
+        },
+        {
+          "label": "likely kids will love it"
+        },
+        {
+          "label": "likely the health inspector shows up"
+        }
+      ]
+    },
+    {
+      "id": "health-inspector",
+      "text": "The health inspector is visiting my restaurant when something skitters across the floor. What is it?",
+      "scales": [
+        {
+          "label": "likely they shut me down"
+        },
+        {
+          "label": "likely they order something to go"
+        },
+        {
+          "label": "likely it ends up on the local news"
+        }
+      ]
+    },
+    {
+      "id": "doorbell-3am",
+      "text": "Someone rings my doorbell at 3 a.m. Who is it?",
+      "scales": [
+        {
+          "label": "likely I'll open the door"
+        },
+        {
+          "label": "likely I'll call the police"
+        },
+        {
+          "label": "likely I'll make them breakfast"
+        }
+      ]
+    },
+    {
+      "id": "magic-lamp",
+      "text": "I rub a magic lamp, and no genie comes out. What does?",
+      "scales": [
+        {
+          "label": "likely I'll rub it again"
+        },
+        {
+          "label": "likely it ruins my life"
+        },
+        {
+          "label": "likely I'll sell the lamp"
+        }
+      ]
+    },
+    {
+      "id": "presentation",
+      "text": "I'm presenting to my whole company. What's on my next slide?",
+      "scales": [
+        {
+          "label": "likely I'll get fired"
+        },
+        {
+          "label": "likely I'll get promoted"
+        },
+        {
+          "label": "likely it goes viral"
+        }
+      ]
+    },
+    {
+      "id": "cooking-show",
+      "text": "I'm on a cooking show. What's the mystery ingredient?",
+      "scales": [
+        {
+          "label": "likely I'll win"
+        },
+        {
+          "label": "likely the judges faint"
+        },
+        {
+          "label": "delicious"
+        }
+      ]
+    },
+    {
+      "id": "long-flight",
+      "text": "I fall asleep on a long flight. What's in the seat next to me when I wake up?",
+      "scales": [
+        {
+          "label": "likely the plane turns around"
+        },
+        {
+          "label": "likely I'll share my snacks"
+        },
+        {
+          "label": "likely it follows me home"
+        }
+      ]
+    },
+    {
+      "id": "babysitting",
+      "text": "I'm babysitting the neighbor's kids. What do I let them do?",
+      "scales": [
+        {
+          "label": "likely I'll get asked back"
+        },
+        {
+          "label": "likely the parents find out"
+        },
+        {
+          "label": "likely the kids tell everyone at school"
+        }
+      ]
+    },
+    {
+      "id": "mayor",
+      "text": "I'm running for mayor. What's my big campaign promise?",
+      "scales": [
+        {
+          "label": "likely I'll win"
+        },
+        {
+          "label": "likely I'll keep it"
+        },
+        {
+          "label": "likely the town throws me a parade"
+        }
+      ]
+    },
+    {
+      "id": "new-pet",
+      "text": "I just adopted a new pet. What is it?",
+      "scales": [
+        {
+          "label": "likely my landlord finds out"
+        },
+        {
+          "label": "cuddly"
+        },
+        {
+          "label": "likely it destroys the couch"
+        }
+      ]
+    },
+    {
+      "id": "thanksgiving",
+      "text": "I'm hosting Thanksgiving this year. What's the main dish?",
+      "scales": [
+        {
+          "label": "likely the family comes back next year"
+        },
+        {
+          "label": "likely someone orders pizza"
+        },
+        {
+          "label": "likely it becomes a tradition"
+        }
+      ]
+    },
+    {
+      "id": "first-date",
+      "text": "I'm on a first date. What do I bring up at dinner?",
+      "scales": [
+        {
+          "label": "likely there's a second date"
+        },
+        {
+          "label": "likely they fake an emergency"
+        },
+        {
+          "label": "likely they tell all their friends"
+        }
+      ]
+    },
+    {
+      "id": "superpower",
+      "text": "I wake up with a brand new superpower. What is it?",
+      "scales": [
+        {
+          "label": "useful"
+        },
+        {
+          "label": "likely the government comes looking for me"
+        },
+        {
+          "label": "likely I get my own movie"
+        }
+      ]
+    },
+    {
+      "id": "surprise-party",
+      "text": "I'm throwing my best friend a surprise party. What's the theme?",
+      "scales": [
+        {
+          "label": "likely they're actually surprised"
+        },
+        {
+          "label": "likely the neighbors call the cops"
+        },
+        {
+          "label": "likely we're still friends after"
+        }
+      ]
+    },
+    {
+      "id": "game-show",
+      "text": "I'm on a game show. What's the grand prize?",
+      "scales": [
+        {
+          "label": "likely I'll want to win it"
+        },
+        {
+          "label": "likely I'll regret winning"
+        },
+        {
+          "label": "likely it fits in my car"
+        }
+      ]
+    },
+    {
+      "id": "new-neighbor",
+      "text": "A new neighbor moves in next door. What's in the moving truck?",
+      "scales": [
+        {
+          "label": "likely we become friends"
+        },
+        {
+          "label": "likely I'll move out"
+        },
+        {
+          "label": "likely the HOA gets involved"
+        }
+      ]
+    },
+    {
+      "id": "principals-office",
+      "text": "I get called into the principal's office. What did I do?",
+      "scales": [
+        {
+          "label": "likely I'll get suspended"
+        },
+        {
+          "label": "likely the principal secretly laughs"
+        },
+        {
+          "label": "likely it ends up in the yearbook"
+        }
+      ]
+    },
+    {
+      "id": "zookeeper",
+      "text": "It's my first day as a zookeeper. What animal escapes?",
+      "scales": [
+        {
+          "label": "likely I'll keep my job"
+        },
+        {
+          "label": "dangerous"
+        },
+        {
+          "label": "likely I catch it myself"
+        }
+      ]
+    },
+    {
+      "id": "invention",
+      "text": "I invented something that's going to make me rich. What is it?",
+      "scales": [
+        {
+          "label": "likely I'll actually get rich"
+        },
+        {
+          "label": "likely it gets recalled"
+        },
+        {
+          "label": "likely my mom buys one"
+        }
+      ]
+    },
+    {
+      "id": "elevator",
+      "text": "I'm stuck in an elevator for three hours. Who's in there with me?",
+      "scales": [
+        {
+          "label": "likely we'll be friends after"
+        },
+        {
+          "label": "likely I'll take the stairs forever"
+        },
+        {
+          "label": "likely I'll climb out the ceiling hatch"
+        }
+      ]
+    },
+    {
+      "id": "childrens-book",
+      "text": "I'm writing a children's book. What's it about?",
+      "scales": [
+        {
+          "label": "likely it becomes a bestseller"
+        },
+        {
+          "label": "likely parents complain"
+        },
+        {
+          "label": "likely kids beg for it at bedtime"
+        }
+      ]
+    },
+    {
+      "id": "camping",
+      "text": "I'm camping, and I hear something outside my tent. What is it?",
+      "scales": [
+        {
+          "label": "likely I'll sleep tonight"
+        },
+        {
+          "label": "likely I'll pack up and drive home"
+        },
+        {
+          "label": "likely I'll unzip the tent"
+        }
+      ]
+    },
+    {
+      "id": "class-pet",
+      "text": "My kid brings the class pet home for the weekend. What is it?",
+      "scales": [
+        {
+          "label": "likely it escapes"
+        },
+        {
+          "label": "likely I'll want one of my own"
+        },
+        {
+          "label": "likely the teacher notices something's different"
+        }
+      ]
+    },
+    {
+      "id": "knight-quest",
+      "text": "I'm a knight, and the king sends me on a quest. What is it?",
+      "scales": [
+        {
+          "label": "likely I'll come back a hero"
+        },
+        {
+          "label": "likely I'll quit being a knight"
+        },
+        {
+          "label": "dangerous"
+        }
+      ]
+    },
+    {
+      "id": "youtube-channel",
+      "text": "I'm starting a YouTube channel. What's it about?",
+      "scales": [
+        {
+          "label": "likely I'll hit a million subscribers"
+        },
+        {
+          "label": "likely my family unsubscribes"
+        },
+        {
+          "label": "likely I'll get a sponsor"
+        }
+      ]
+    },
+    {
+      "id": "tooth-fairy",
+      "text": "I'm the tooth fairy, and I leave something under the pillow instead of money. What is it?",
+      "scales": [
+        {
+          "label": "likely the kid is happy"
+        },
+        {
+          "label": "likely the parents call someone"
+        },
+        {
+          "label": "likely I keep my job"
+        }
+      ]
+    },
+    {
+      "id": "aliens",
+      "text": "Aliens land in my backyard. What do they want?",
+      "scales": [
+        {
+          "label": "likely I'll give it to them"
+        },
+        {
+          "label": "likely they take me with them"
+        },
+        {
+          "label": "friendly"
+        }
+      ]
+    },
+    {
+      "id": "tattoo",
+      "text": "I let a stranger pick my first tattoo. What do I get?",
+      "scales": [
+        {
+          "label": "likely I'll regret it"
+        },
+        {
+          "label": "likely my mom sees it"
+        },
+        {
+          "label": "likely strangers ask about it"
+        }
+      ]
+    },
+    {
+      "id": "lemonade-stand",
+      "text": "I'm running a lemonade stand. What's my secret ingredient?",
+      "scales": [
+        {
+          "label": "likely I'll sell out"
+        },
+        {
+          "label": "likely customers come back"
+        },
+        {
+          "label": "likely a competitor steals the recipe"
+        }
+      ]
+    },
+    {
+      "id": "lottery",
+      "text": "I win the lottery. What's the first thing I buy?",
+      "scales": [
+        {
+          "label": "likely I'll go broke"
+        },
+        {
+          "label": "likely my family asks for money"
+        },
+        {
+          "label": "useful"
+        }
+      ]
+    },
+    {
+      "id": "wedding-dj",
+      "text": "I'm the DJ at a wedding. What do I play for the first dance?",
+      "scales": [
+        {
+          "label": "likely the couple leaves early"
+        },
+        {
+          "label": "likely the dance floor fills up"
+        },
+        {
+          "label": "likely I'll get paid"
+        }
+      ]
+    },
+    {
+      "id": "time-traveler",
+      "text": "I time travel and bring one thing back from the future. What is it?",
+      "scales": [
+        {
+          "label": "likely it changes the world"
+        },
+        {
+          "label": "likely anyone believes me"
+        },
+        {
+          "label": "useful"
+        }
+      ]
+    },
+    {
+      "id": "sleepover",
+      "text": "I'm hosting a sleepover. What do we do at midnight?",
+      "scales": [
+        {
+          "label": "likely we get caught"
+        },
+        {
+          "label": "likely everyone goes home early"
+        },
+        {
+          "label": "likely we still talk about it years later"
+        }
+      ]
+    },
+    {
+      "id": "boss-gift",
+      "text": "I open a gift from my boss at the holiday party. What is it?",
+      "scales": [
+        {
+          "label": "likely I'll regift it"
+        },
+        {
+          "label": "likely I'll start job hunting"
+        },
+        {
+          "label": "likely I'll use it every day"
+        }
+      ]
+    },
+    {
+      "id": "astronaut",
+      "text": "I'm an astronaut, and I sneak one thing onto the rocket. What is it?",
+      "scales": [
+        {
+          "label": "likely NASA finds out"
+        },
+        {
+          "label": "likely it saves the mission"
+        },
+        {
+          "label": "likely it floats away"
+        }
+      ]
+    },
+    {
+      "id": "treehouse",
+      "text": "I'm building a treehouse. What's the one feature it has to have?",
+      "scales": [
+        {
+          "label": "likely the city makes me tear it down"
+        },
+        {
+          "label": "likely the kids let me in"
+        },
+        {
+          "label": "likely it survives the first storm"
+        }
+      ]
+    },
+    {
+      "id": "autocorrect",
+      "text": "My phone autocorrects my text to the family group chat. What does it say?",
+      "scales": [
+        {
+          "label": "likely I get kicked out of the chat"
+        },
+        {
+          "label": "likely someone screenshots it"
+        },
+        {
+          "label": "likely they let me live it down"
+        }
+      ]
+    },
+    {
+      "id": "substitute-teacher",
+      "text": "I'm a substitute teacher. What do I teach today?",
+      "scales": [
+        {
+          "label": "likely the kids remember it forever"
+        },
+        {
+          "label": "likely the principal walks in"
+        },
+        {
+          "label": "likely I get asked back"
+        }
+      ]
+    },
+    {
+      "id": "basement-door",
+      "text": "I find a door in my basement I've never seen before. What's behind it?",
+      "scales": [
+        {
+          "label": "likely I'll open it again"
+        },
+        {
+          "label": "likely I'll sell the house"
+        },
+        {
+          "label": "likely I'll tell anyone"
+        }
+      ]
+    },
+    {
+      "id": "pirate-treasure",
+      "text": "I'm a pirate captain. What's in my treasure chest?",
+      "scales": [
+        {
+          "label": "likely the crew mutinies"
+        },
+        {
+          "label": "likely I'll bury it again"
+        },
+        {
+          "label": "worth the trip"
+        }
+      ]
+    },
+    {
+      "id": "road-trip",
+      "text": "I'm in charge of the music on a 10-hour road trip. What do I play?",
+      "scales": [
+        {
+          "label": "likely I get left at a gas station"
+        },
+        {
+          "label": "likely everyone sings along"
+        },
+        {
+          "label": "likely they let me pick again"
+        }
+      ]
+    },
+    {
+      "id": "robot-assistant",
+      "text": "I get a robot assistant. What's the first thing it does?",
+      "scales": [
+        {
+          "label": "helpful"
+        },
+        {
+          "label": "likely it takes over the house"
+        },
+        {
+          "label": "likely I'll return it"
+        }
+      ]
+    },
+    {
+      "id": "county-fair",
+      "text": "I win a blue ribbon at the county fair. What's it for?",
+      "scales": [
+        {
+          "label": "likely I'll win again next year"
+        },
+        {
+          "label": "impressive"
+        },
+        {
+          "label": "likely the judges remember me"
+        }
+      ]
+    },
+    {
+      "id": "fortune-teller",
+      "text": "I'm a fortune teller. What do I tell my first customer?",
+      "scales": [
+        {
+          "label": "likely they come back"
+        },
+        {
+          "label": "likely it comes true"
+        },
+        {
+          "label": "likely they ask for a refund"
+        }
+      ]
+    },
+    {
+      "id": "talking-dog",
+      "text": "My dog learns to talk. What's the first thing it says?",
+      "scales": [
+        {
+          "label": "likely I'll keep it a secret"
+        },
+        {
+          "label": "likely it gets its own TV show"
+        },
+        {
+          "label": "likely I still let it on the bed"
+        }
+      ]
+    },
+    {
+      "id": "mall-santa",
+      "text": "I'm a mall Santa. What does the kid on my lap ask for?",
+      "scales": [
+        {
+          "label": "likely I can make it happen"
+        },
+        {
+          "label": "likely the parents panic"
+        },
+        {
+          "label": "likely I quit on the spot"
+        }
+      ]
+    }
+  ]
+}
